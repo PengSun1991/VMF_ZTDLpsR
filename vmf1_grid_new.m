@@ -1,40 +1,25 @@
 function [zhd,zwd,VMF1_grid_file] = vmf1_grid_new (indir_VMF1_grid,orography_ell,VMF1_grid_file,mjd,lat,lon,h_ell,taumodel,gamamodel)
 %
-% vmf1_grid.m
+% This file is modified based on VMF official Matlab code: https://vmf.geo.tuwien.ac.at/codes/vmf1_grid.m
+% The suthors greatly appreciate the Tu Wien for providing the code that written by Daniel Landskron.
 %
 % This routine determines mapping functions plus zenith delays from the
 % gridded VMF1 files, as available from:
 % http://vmf.geo.tuwien.ac.at/trop_products/GRID/2.5x2/VMF1/
 %
-% On the temporal scale, the values from the two surrounding NWM epochs are
-% linearly interpolated to the respective mjd.
-% In the horizontal, a bilinear interpolation is done for the mapping 
-% function coefficients as well as for the zenith delays. In the vertical, 
-% on the one hand the height correction by Niell (1996) is applied in order 
-% to "lift" the hydrostatic mapping function from zero height to h_ell; on
-% the other hand, specific formulae as suggested by Kouba (2008) are 
-% applied in order to "lift" the zenith delays from the respective heights 
-% of the grid points (orography_ell) to that of the desired location.
-%
-% Reference for conversion of mapping functions:
-% Niell, A.E. (1996), Global mapping functions for the atmosphere delay at 
-% 310 radio wavelengths. J. Geophys. Res., 101, 3227-3246
-% 
-% Reference for conversion of zenith delays:
-% Kouba, J. (2008), Implementation and testing of the gridded Vienna 
-% Mapping Function 1 (VMF1). J. Geodesy, Vol. 82:193-205, 
-% DOI: 10.1007/s00190-007-0170-0
-%
+% On the temporal scale, the values from the two surrounding NWM epochs are  linearly interpolated to the respective mjd.
+% In the horizontal, a bilinear interpolation is done for the mapping for the zenith delays.
 %
 % INPUT:
 %         o indir_VMF1_grid ... input directory where the yearly subdivided VMF1 gridded files are stored
-%         o indir_orography ... input directory where the orography_ell file is stored
+%         o orography_ell ...   orography grid
 %         o VMF1_grid_file: ... cell containing filenames, VMF1 data and the orography, which is always passed with the function, must be set to '[]' by the user in the initial run
 %         o mjd ............... modified Julian date
 %         o lat ............... ellipsoidal latitude in radians
 %         o lon ............... ellipsoidal longitude in radians
 %         o h_ell ............. ellipsoidal height in meters
-%         o zd ................ zenith distance in radians
+%         o tau ................ZHD lapse rate for lifting the surface ZHD to the target height
+%         o gamamodel ..........ZWD lapse rate for lifting the surface ZWD to the target height
 %
 % OUTPUT:
 %         o mfh ............... hydrostatic mapping function, valid at h_ell
@@ -42,13 +27,6 @@ function [zhd,zwd,VMF1_grid_file] = vmf1_grid_new (indir_VMF1_grid,orography_ell
 %         o zhd ............... zenith hydrostatic delay, valid at h_ell
 %         o zwd ............... zenith wet delay, valid at h_ell
 %         o VMF1_grid_file: ... cell containing filenames, VMF1 data and the orography, which is always passed with the function, must be set to '[]' by the user in the initial run
-%
-% -------------------------------------------------------------------------
-%
-% written by Daniel Landskron (2017/06/28)
-%
-% Revision:
-%  o 2019-02-08: indices out of range are now corrected
 %
 % =========================================================================
 
