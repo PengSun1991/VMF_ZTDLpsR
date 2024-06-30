@@ -196,6 +196,9 @@ end
 % the first four columns are equal
 VMF3_data_int_h1(:,1:4) = VMF3_data_int_h0(:,1:4);
 
+
+%% (5) bring  zhd and zwd of the surrounding grid points to the respective height of the location
+
 doy= UTC2DOY(year(1),month(1),day(1));
 cosy=cos((doy-taumodel(index,3))*2*pi/365.25);
 coshy=cos((doy-taumodel(index,5))*4*pi/365.25);
@@ -203,10 +206,6 @@ af=taumodel(index,1)+taumodel(index,2).*cosy+taumodel(index,4).*coshy;
 cosy=cos((doy-gamamodel(index,3))*2*pi/365.25);
 coshy=cos((doy-gamamodel(index,5))*4*pi/365.25);
 gama=gamamodel(index,1)+gamamodel(index,2).*cosy+gamamodel(index,4).*coshy;
-
-
-%% (5) bring mfh, mfw, zhd and zwd of the surrounding grid points to the respective height of the location
-
 % (a) zhd
 % to be exact, the latitudes of the respective grid points would have to be used instead of the latitude of the station (lat). However, the loss of accuracy is only in the sub-micrometer range.
 VMF3_data_int_h1(:,5) = VMF3_data_int_h0(:,5).*(1-af.*(h_ell-orography_ell(index))/1000).^5.256; 
