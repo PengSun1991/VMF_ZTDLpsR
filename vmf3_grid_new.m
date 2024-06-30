@@ -1,7 +1,7 @@
 function [  zhd , zwd , VMF3_grid_file ] = vmf3_grid_new ( indir_VMF3_grid, orography_ell , VMF3_grid_file , mjd , lat , lon , h_ell , grid_res ,taumodel,gamamodel)
 %
 % This file is modified based on VMF official Matlab code: https://vmf.geo.tuwien.ac.at/codes/vmf3_grid.m
-% The suthors greatly appreciate the Tu Wien for providing the code that written by Daniel Landskron.
+% The authors greatly appreciate the Tu Wien for providing the code that written by Daniel Landskron.
 %
 % This routine determines mapping functions plus zenith delays from the gridded VMF3 files, as available from:
 % http://vmf.geo.tuwien.ac.at/trop_products/GRID/1x1/VMF3/
